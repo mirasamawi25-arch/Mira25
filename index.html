@@ -58,26 +58,29 @@
   .search-bar button{background:linear-gradient(135deg,#a78bfa,#60a5fa);border:none;color:#fff;padding:.75rem 1.2rem;border-radius:.75rem;cursor:pointer;font-weight:700}
 
   /* ── SECTIONS ── */
-  .subject-section{padding:4rem 1.5rem;max-width:1200px;margin:0 auto}
+  .subject-section{padding:4rem 1.5rem;max-width:1200px;margin:0 auto;scroll-margin-top:64px}
   .section-header{display:flex;align-items:center;gap:1rem;margin-bottom:2rem;padding-bottom:1rem;border-bottom:2px solid var(--border)}
   .section-icon{font-size:2.5rem}
   .section-title{font-size:1.8rem;font-weight:800}
   .section-badge{font-size:.75rem;font-weight:700;padding:.25rem .7rem;border-radius:1rem;margin-left:.5rem}
 
   /* ── TOPIC GRID ── */
-  .topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.25rem}
-  .topic-card{background:var(--card);border:1px solid var(--border);border-radius:1rem;overflow:hidden;transition:.25s;cursor:pointer}
+  .topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.25rem;align-items:start}
+  .topic-card{background:var(--card);border:1px solid var(--border);border-radius:1rem;overflow:hidden;transition:transform .2s,box-shadow .2s,border-color .2s;cursor:pointer}
   .topic-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.4)}
-  .topic-header{padding:.9rem 1.1rem;display:flex;align-items:center;gap:.75rem;font-weight:700;font-size:.95rem}
+  .topic-header{padding:.9rem 1.1rem;display:flex;align-items:center;gap:.75rem;font-weight:700;font-size:.95rem;user-select:none}
   .topic-header .num{font-size:.75rem;font-weight:800;padding:.2rem .5rem;border-radius:.4rem;min-width:2rem;text-align:center}
-  .topic-body{padding:0 1.1rem 1rem;display:none}
-  .topic-body.open{display:block}
+  /* smooth height animation */
+  .topic-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease}
+  .topic-body.open{grid-template-rows:1fr}
+  .topic-body-inner{overflow:hidden;padding:0 1.1rem}
+  .topic-body.open .topic-body-inner{padding-bottom:1rem}
   .topic-body ul{list-style:none;padding:0}
   .topic-body li{padding:.4rem 0;font-size:.85rem;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.05);display:flex;gap:.5rem;align-items:flex-start;line-height:1.4}
   .topic-body li::before{content:'▸';flex-shrink:0;margin-top:.05rem}
   .topic-body li.hl{color:#fbbf24}
   .topic-body li.hl::before{content:'★'}
-  .chevron{margin-left:auto;transition:.25s;font-size:.8rem}
+  .chevron{margin-left:auto;transition:transform .3s ease;font-size:.8rem;display:inline-block}
   .topic-card.open .chevron{transform:rotate(180deg)}
   .hl-note{font-size:.72rem;font-weight:700;padding:.1rem .4rem;border-radius:.3rem;background:rgba(251,191,36,.15);color:#fbbf24;margin-left:auto;flex-shrink:0}
 
@@ -95,13 +98,21 @@
   .ess .topic-header{background:rgba(16,185,129,.1)} .ess .topic-header .num{background:rgba(16,185,129,.2);color:var(--ess)}
   .ess .topic-body li::before{color:var(--ess)} .ess .section-title{color:var(--ess)} .ess .section-badge{background:rgba(16,185,129,.2);color:var(--ess)}
 
-  /* ── SEARCH RESULTS ── */
-  #search-results{max-width:900px;margin:0 auto;padding:1rem 1.5rem;display:none}
-  #search-results h2{margin-bottom:1rem;color:var(--muted);font-size:1rem}
-  .result-item{background:var(--card);border:1px solid var(--border);border-radius:.75rem;padding:.8rem 1.1rem;margin-bottom:.5rem;font-size:.88rem}
-  .result-item .result-tag{font-size:.72rem;font-weight:700;padding:.15rem .4rem;border-radius:.3rem;margin-right:.5rem}
-  .result-item .result-topic{color:var(--muted);font-size:.78rem;margin-top:.25rem}
-  .result-item mark{background:rgba(167,139,250,.3);color:#e2e8f0;border-radius:.2rem;padding:0 .1rem}
+  /* ── SEARCH OVERLAY ── */
+  #search-overlay{position:fixed;inset:0;z-index:200;display:flex;align-items:flex-start;justify-content:center;padding-top:5rem;pointer-events:none;opacity:0;transition:opacity .2s}
+  #search-overlay.visible{opacity:1;pointer-events:all}
+  #search-overlay::before{content:'';position:absolute;inset:0;background:rgba(10,10,20,.7);backdrop-filter:blur(4px)}
+  #search-panel{position:relative;z-index:1;width:min(680px,92vw);max-height:70vh;background:var(--card2);border:1px solid var(--border);border-radius:1.25rem;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 32px 80px rgba(0,0,0,.6)}
+  #search-panel-header{padding:.75rem 1rem;border-bottom:1px solid var(--border);font-size:.8rem;color:var(--muted);display:flex;align-items:center;justify-content:space-between}
+  #search-panel-close{background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;line-height:1}
+  #search-panel-close:hover{color:#fff}
+  #search-results{overflow-y:auto;padding:.5rem .75rem .75rem}
+  .result-item{background:var(--card);border:1px solid var(--border);border-radius:.75rem;padding:.75rem 1rem;margin-bottom:.5rem;font-size:.88rem;cursor:pointer;transition:.15s}
+  .result-item:hover{border-color:#a78bfa;background:#1e1e38}
+  .result-item .result-tag{font-size:.72rem;font-weight:700;padding:.15rem .45rem;border-radius:.3rem;margin-right:.4rem}
+  .result-item .result-topic{color:var(--muted);font-size:.78rem;margin-top:.3rem}
+  .result-item mark{background:rgba(167,139,250,.35);color:#e2e8f0;border-radius:.2rem;padding:0 .1rem}
+  .no-results{padding:1.5rem;text-align:center;color:var(--muted);font-size:.9rem}
 
   /* ── FOOTER ── */
   footer{text-align:center;padding:3rem 1.5rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border)}
@@ -118,12 +129,12 @@
 
 <nav>
   <span class="logo">✦ IB Science Hub</span>
-  <a href="#biology" class="bio">🧬 Bio</a>
-  <a href="#chemistry" class="chem">⚗️ Chem</a>
-  <a href="#physics" class="phys">⚡ Physics</a>
-  <a href="#cs" class="cs">💻 CS</a>
-  <a href="#sehs" class="sehs">🏃 SEHS</a>
-  <a href="#ess" class="ess">🌍 ESS</a>
+  <a href="#biology" class="bio" onclick="scrollTo('biology');return false">🧬 Bio</a>
+  <a href="#chemistry" class="chem" onclick="scrollTo('chemistry');return false">⚗️ Chem</a>
+  <a href="#physics" class="phys" onclick="scrollTo('physics');return false">⚡ Physics</a>
+  <a href="#cs" class="cs" onclick="scrollTo('cs');return false">💻 CS</a>
+  <a href="#sehs" class="sehs" onclick="scrollTo('sehs');return false">🏃 SEHS</a>
+  <a href="#ess" class="ess" onclick="scrollTo('ess');return false">🌍 ESS</a>
 </nav>
 
 <!-- HERO -->
@@ -131,21 +142,30 @@
   <h1>Your IB Syllabus,<br><span>All in One Place</span></h1>
   <p>Stop drowning in 100-page guides. Every syllabus point, every topic — organised, searchable, and colour-coded for you.</p>
   <div class="search-bar">
-    <input type="text" id="globalSearch" placeholder="Search any syllabus point… e.g. 'meiosis', 'Newton', 'algorithm'" oninput="handleSearch(this.value)">
-    <button onclick="handleSearch(document.getElementById('globalSearch').value)">🔍</button>
+    <input type="text" id="globalSearch" placeholder="Search any syllabus point… e.g. 'meiosis', 'Newton', 'algorithm'" oninput="handleSearch(this.value)" autocomplete="off">
+    <button onclick="document.getElementById('globalSearch').focus()">🔍</button>
   </div>
   <div style="height:1.5rem"></div>
   <div class="subject-pills">
-    <a href="#biology" class="pill bio">🧬 Biology</a>
-    <a href="#chemistry" class="pill chem">⚗️ Chemistry</a>
-    <a href="#physics" class="pill phys">⚡ Physics</a>
-    <a href="#cs" class="pill cs">💻 Computer Science</a>
-    <a href="#sehs" class="pill sehs">🏃 Sport Science</a>
-    <a href="#ess" class="pill ess">🌍 Env. Systems</a>
+    <button class="pill bio" onclick="scrollTo('biology')">🧬 Biology</button>
+    <button class="pill chem" onclick="scrollTo('chemistry')">⚗️ Chemistry</button>
+    <button class="pill phys" onclick="scrollTo('physics')">⚡ Physics</button>
+    <button class="pill cs" onclick="scrollTo('cs')">💻 Computer Science</button>
+    <button class="pill sehs" onclick="scrollTo('sehs')">🏃 Sport Science</button>
+    <button class="pill ess" onclick="scrollTo('ess')">🌍 Env. Systems</button>
   </div>
 </section>
 
-<div id="search-results"></div>
+<!-- SEARCH OVERLAY -->
+<div id="search-overlay" onclick="closeSearch(event)">
+  <div id="search-panel">
+    <div id="search-panel-header">
+      <span id="search-count"></span>
+      <button id="search-panel-close" onclick="clearSearch()">✕</button>
+    </div>
+    <div id="search-results"></div>
+  </div>
+</div>
 
 <!-- ═══════════════ BIOLOGY ═══════════════ -->
 <section id="biology" class="subject-section bio">
@@ -888,12 +908,10 @@ ess: [
 // ═══════════════════════════════════════════════
 function renderGrid(subject, color) {
   const grid = document.getElementById(subject + '-grid');
-  const topics = SYLLABUS[subject];
-  topics.forEach((topic, idx) => {
+  SYLLABUS[subject].forEach((topic) => {
     const card = document.createElement('div');
     card.className = `topic-card ${color}`;
     card.dataset.subject = subject;
-    card.dataset.idx = idx;
 
     const pts = topic.points.map(p => {
       const isHL = typeof p === 'object' && p.hl;
@@ -908,7 +926,7 @@ function renderGrid(subject, color) {
         <span class="chevron">▼</span>
       </div>
       <div class="topic-body">
-        <ul>${pts}</ul>
+        <div class="topic-body-inner"><ul>${pts}</ul></div>
       </div>`;
     grid.appendChild(card);
   });
@@ -923,15 +941,15 @@ renderGrid('ess','ess');
 
 function toggleCard(header) {
   const card = header.parentElement;
-  const body = card.querySelector('.topic-body');
-  const open = body.classList.toggle('open');
-  card.classList.toggle('open', open);
+  const isOpen = card.classList.contains('open');
+  card.classList.toggle('open', !isOpen);
+  card.querySelector('.topic-body').classList.toggle('open', !isOpen);
 }
 
 function toggleAll(subject) {
   const grid = document.getElementById(subject + '-grid');
-  const cards = grid.querySelectorAll('.topic-card');
-  const anyOpen = [...cards].some(c => c.classList.contains('open'));
+  const cards = [...grid.querySelectorAll('.topic-card')];
+  const anyOpen = cards.some(c => c.classList.contains('open'));
   cards.forEach(card => {
     card.classList.toggle('open', !anyOpen);
     card.querySelector('.topic-body').classList.toggle('open', !anyOpen);
@@ -941,7 +959,18 @@ function toggleAll(subject) {
 }
 
 // ═══════════════════════════════════════════════
-// SEARCH
+// SMOOTH SCROLL (accounts for fixed nav height)
+// ═══════════════════════════════════════════════
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const navH = document.querySelector('nav').offsetHeight;
+  const top = el.getBoundingClientRect().top + window.scrollY - navH - 8;
+  window.scrollTo({ top, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════════
+// SEARCH — debounced, overlay panel
 // ═══════════════════════════════════════════════
 const SUBJECT_META = {
   biology:   { label:'Biology',    color:'bio',  emoji:'🧬' },
@@ -952,47 +981,94 @@ const SUBJECT_META = {
   ess:       { label:'ESS',        color:'ess',  emoji:'🌍' }
 };
 
+let _searchTimer;
 function handleSearch(val) {
+  clearTimeout(_searchTimer);
+  _searchTimer = setTimeout(() => doSearch(val), 120);
+}
+
+function doSearch(val) {
   const q = val.trim().toLowerCase();
+  const overlay = document.getElementById('search-overlay');
   const resultsDiv = document.getElementById('search-results');
-  if (!q) { resultsDiv.style.display = 'none'; return; }
+  const countEl = document.getElementById('search-count');
+
+  if (!q) { overlay.classList.remove('visible'); return; }
 
   const hits = [];
   Object.keys(SYLLABUS).forEach(subj => {
     SYLLABUS[subj].forEach(topic => {
       topic.points.forEach(p => {
         const text = typeof p === 'object' ? p.text : p;
-        if (text.toLowerCase().includes(q)) {
-          hits.push({ subj, topic: topic.num + ' ' + topic.title, text });
-        }
+        if (text.toLowerCase().includes(q)) hits.push({ subj, topicNum: topic.num, topicTitle: topic.title, text });
       });
     });
   });
 
-  resultsDiv.style.display = 'block';
+  overlay.classList.add('visible');
+  const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+
   if (!hits.length) {
-    resultsDiv.innerHTML = `<h2>No results for "<em>${val}</em>"</h2>`;
+    countEl.textContent = 'No results';
+    resultsDiv.innerHTML = `<div class="no-results">Nothing found for "<strong>${val}</strong>" — try a different term</div>`;
     return;
   }
-  const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
-  resultsDiv.innerHTML = `<h2>${hits.length} result${hits.length>1?'s':''} for "<em>${val}</em>"</h2>` +
-    hits.map(h => {
-      const m = SUBJECT_META[h.subj];
-      return `<div class="result-item">
-        <span class="result-tag ${m.color}" style="background:rgba(var(--_c),.15)">${m.emoji} ${m.label}</span>
-        ${h.text.replace(re,'<mark>$1</mark>')}
-        <div class="result-topic">${h.topic}</div>
-      </div>`;
-    }).join('');
+
+  countEl.textContent = `${hits.length} result${hits.length > 1 ? 's' : ''} for "${val}"`;
+  resultsDiv.innerHTML = hits.map(h => {
+    const m = SUBJECT_META[h.subj];
+    return `<div class="result-item" onclick="jumpToTopic('${h.subj}','${h.topicNum}')">
+      <span class="result-tag" style="background:rgba(0,0,0,.3);color:var(--${m.color})">${m.emoji} ${m.label}</span>
+      ${h.text.replace(re,'<mark>$1</mark>')}
+      <div class="result-topic">${h.topicNum} · ${h.topicTitle}</div>
+    </div>`;
+  }).join('');
 }
 
-// nav highlight on scroll
+function jumpToTopic(subject, topicNum) {
+  clearSearch();
+  // find the card in that subject grid
+  const grid = document.getElementById(subject + '-grid');
+  const cards = [...grid.querySelectorAll('.topic-card')];
+  const card = cards.find(c => c.querySelector('.num').textContent === topicNum);
+  if (card) {
+    const navH = document.querySelector('nav').offsetHeight;
+    const top = card.getBoundingClientRect().top + window.scrollY - navH - 16;
+    window.scrollTo({ top, behavior: 'smooth' });
+    setTimeout(() => {
+      if (!card.classList.contains('open')) {
+        card.classList.add('open');
+        card.querySelector('.topic-body').classList.add('open');
+      }
+      card.style.outline = '2px solid #a78bfa';
+      setTimeout(() => card.style.outline = '', 1800);
+    }, 400);
+  }
+}
+
+function clearSearch() {
+  document.getElementById('search-overlay').classList.remove('visible');
+  document.getElementById('globalSearch').value = '';
+}
+
+function closeSearch(e) {
+  if (e.target === document.getElementById('search-overlay')) clearSearch();
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') clearSearch(); });
+
+// ═══════════════════════════════════════════════
+// NAV HIGHLIGHT ON SCROLL
+// ═══════════════════════════════════════════════
 const sections = document.querySelectorAll('.subject-section');
-const navLinks = document.querySelectorAll('nav a[href^="#"]');
+const navLinks = document.querySelectorAll('nav a[class]');
 window.addEventListener('scroll', () => {
   let cur = '';
   sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
-  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#'+cur));
+  navLinks.forEach(a => {
+    const href = a.getAttribute('href');
+    a.classList.toggle('active', href === '#' + cur);
+  });
 }, { passive: true });
 </script>
 </body>
