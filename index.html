@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB Science Hub — Syllabus at a Glance</title>
+<style>
+  :root {
+    --bio:    #22c55e;
+    --bio-dk: #16a34a;
+    --chem:   #a855f7;
+    --chem-dk:#7c3aed;
+    --phys:   #3b82f6;
+    --phys-dk:#1d4ed8;
+    --cs:     #f97316;
+    --cs-dk:  #ea580c;
+    --sehs:   #ec4899;
+    --sehs-dk:#be185d;
+    --ess:    #10b981;
+    --ess-dk: #047857;
+    --bg:     #0f0f1a;
+    --card:   #1a1a2e;
+    --card2:  #16213e;
+    --text:   #e2e8f0;
+    --muted:  #94a3b8;
+    --border: #2d3748;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+
+  /* ── NAV ── */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;backdrop-filter:blur(16px);background:rgba(15,15,26,.85);border-bottom:1px solid var(--border);padding:.75rem 1.5rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+  nav .logo{font-size:1.1rem;font-weight:800;background:linear-gradient(90deg,#a78bfa,#60a5fa,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-right:auto}
+  nav a{color:var(--muted);text-decoration:none;font-size:.78rem;font-weight:600;padding:.3rem .6rem;border-radius:.4rem;transition:.2s}
+  nav a:hover,nav a.active{color:#fff;background:rgba(255,255,255,.1)}
+  nav a.bio{color:var(--bio)} nav a.chem{color:var(--chem)} nav a.phys{color:var(--phys)}
+  nav a.cs{color:var(--cs)} nav a.sehs{color:var(--sehs)} nav a.ess{color:var(--ess)}
+
+  /* ── HERO ── */
+  .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6rem 1.5rem 3rem;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(139,92,246,.18),transparent 70%)}
+  .hero h1{font-size:clamp(2.2rem,6vw,4rem);font-weight:900;line-height:1.1;margin-bottom:1rem}
+  .hero h1 span{background:linear-gradient(135deg,#a78bfa 0%,#60a5fa 40%,#34d399 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hero p{font-size:1.1rem;color:var(--muted);max-width:600px;margin-bottom:2.5rem}
+  .subject-pills{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;margin-bottom:2rem}
+  .pill{padding:.5rem 1.2rem;border-radius:2rem;font-weight:700;font-size:.85rem;cursor:pointer;border:2px solid transparent;transition:.25s;text-decoration:none;display:inline-block}
+  .pill:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+  .pill.bio{background:rgba(34,197,94,.15);border-color:var(--bio);color:var(--bio)}
+  .pill.chem{background:rgba(168,85,247,.15);border-color:var(--chem);color:var(--chem)}
+  .pill.phys{background:rgba(59,130,246,.15);border-color:var(--phys);color:var(--phys)}
+  .pill.cs{background:rgba(249,115,22,.15);border-color:var(--cs);color:var(--cs)}
+  .pill.sehs{background:rgba(236,72,153,.15);border-color:var(--sehs);color:var(--sehs)}
+  .pill.ess{background:rgba(16,185,129,.15);border-color:var(--ess);color:var(--ess)}
+  .search-bar{display:flex;gap:.5rem;width:100%;max-width:480px}
+  .search-bar input{flex:1;background:var(--card);border:1px solid var(--border);color:var(--text);padding:.75rem 1rem;border-radius:.75rem;font-size:.95rem;outline:none;transition:.2s}
+  .search-bar input:focus{border-color:#a78bfa;box-shadow:0 0 0 3px rgba(167,139,250,.15)}
+  .search-bar button{background:linear-gradient(135deg,#a78bfa,#60a5fa);border:none;color:#fff;padding:.75rem 1.2rem;border-radius:.75rem;cursor:pointer;font-weight:700}
+
+  /* ── SECTIONS ── */
+  .subject-section{padding:4rem 1.5rem;max-width:1200px;margin:0 auto}
+  .section-header{display:flex;align-items:center;gap:1rem;margin-bottom:2rem;padding-bottom:1rem;border-bottom:2px solid var(--border)}
+  .section-icon{font-size:2.5rem}
+  .section-title{font-size:1.8rem;font-weight:800}
+  .section-badge{font-size:.75rem;font-weight:700;padding:.25rem .7rem;border-radius:1rem;margin-left:.5rem}
+
+  /* ── TOPIC GRID ── */
+  .topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.25rem}
+  .topic-card{background:var(--card);border:1px solid var(--border);border-radius:1rem;overflow:hidden;transition:.25s;cursor:pointer}
+  .topic-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.4)}
+  .topic-header{padding:.9rem 1.1rem;display:flex;align-items:center;gap:.75rem;font-weight:700;font-size:.95rem}
+  .topic-header .num{font-size:.75rem;font-weight:800;padding:.2rem .5rem;border-radius:.4rem;min-width:2rem;text-align:center}
+  .topic-body{padding:0 1.1rem 1rem;display:none}
+  .topic-body.open{display:block}
+  .topic-body ul{list-style:none;padding:0}
+  .topic-body li{padding:.4rem 0;font-size:.85rem;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.05);display:flex;gap:.5rem;align-items:flex-start;line-height:1.4}
+  .topic-body li::before{content:'▸';flex-shrink:0;margin-top:.05rem}
+  .topic-body li.hl{color:#fbbf24}
+  .topic-body li.hl::before{content:'★'}
+  .chevron{margin-left:auto;transition:.25s;font-size:.8rem}
+  .topic-card.open .chevron{transform:rotate(180deg)}
+  .hl-note{font-size:.72rem;font-weight:700;padding:.1rem .4rem;border-radius:.3rem;background:rgba(251,191,36,.15);color:#fbbf24;margin-left:auto;flex-shrink:0}
+
+  /* ── COLOUR VARIANTS ── */
+  .bio .topic-header{background:rgba(34,197,94,.1)} .bio .topic-header .num{background:rgba(34,197,94,.2);color:var(--bio)}
+  .bio .topic-body li::before{color:var(--bio)} .bio .section-title{color:var(--bio)} .bio .section-badge{background:rgba(34,197,94,.2);color:var(--bio)}
+  .chem .topic-header{background:rgba(168,85,247,.1)} .chem .topic-header .num{background:rgba(168,85,247,.2);color:var(--chem)}
+  .chem .topic-body li::before{color:var(--chem)} .chem .section-title{color:var(--chem)} .chem .section-badge{background:rgba(168,85,247,.2);color:var(--chem)}
+  .phys .topic-header{background:rgba(59,130,246,.1)} .phys .topic-header .num{background:rgba(59,130,246,.2);color:var(--phys)}
+  .phys .topic-body li::before{color:var(--phys)} .phys .section-title{color:var(--phys)} .phys .section-badge{background:rgba(59,130,246,.2);color:var(--phys)}
+  .cs .topic-header{background:rgba(249,115,22,.1)} .cs .topic-header .num{background:rgba(249,115,22,.2);color:var(--cs)}
+  .cs .topic-body li::before{color:var(--cs)} .cs .section-title{color:var(--cs)} .cs .section-badge{background:rgba(249,115,22,.2);color:var(--cs)}
+  .sehs .topic-header{background:rgba(236,72,153,.1)} .sehs .topic-header .num{background:rgba(236,72,153,.2);color:var(--sehs)}
+  .sehs .topic-body li::before{color:var(--sehs)} .sehs .section-title{color:var(--sehs)} .sehs .section-badge{background:rgba(236,72,153,.2);color:var(--sehs)}
+  .ess .topic-header{background:rgba(16,185,129,.1)} .ess .topic-header .num{background:rgba(16,185,129,.2);color:var(--ess)}
+  .ess .topic-body li::before{color:var(--ess)} .ess .section-title{color:var(--ess)} .ess .section-badge{background:rgba(16,185,129,.2);color:var(--ess)}
+
+  /* ── SEARCH RESULTS ── */
+  #search-results{max-width:900px;margin:0 auto;padding:1rem 1.5rem;display:none}
+  #search-results h2{margin-bottom:1rem;color:var(--muted);font-size:1rem}
+  .result-item{background:var(--card);border:1px solid var(--border);border-radius:.75rem;padding:.8rem 1.1rem;margin-bottom:.5rem;font-size:.88rem}
+  .result-item .result-tag{font-size:.72rem;font-weight:700;padding:.15rem .4rem;border-radius:.3rem;margin-right:.5rem}
+  .result-item .result-topic{color:var(--muted);font-size:.78rem;margin-top:.25rem}
+  .result-item mark{background:rgba(167,139,250,.3);color:#e2e8f0;border-radius:.2rem;padding:0 .1rem}
+
+  /* ── FOOTER ── */
+  footer{text-align:center;padding:3rem 1.5rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border)}
+  footer strong{color:var(--text)}
+
+  /* ── EXPAND ALL ── */
+  .expand-btn{background:rgba(255,255,255,.07);border:1px solid var(--border);color:var(--muted);padding:.4rem .9rem;border-radius:.5rem;cursor:pointer;font-size:.8rem;font-weight:600;transition:.2s;margin-left:auto}
+  .expand-btn:hover{background:rgba(255,255,255,.12);color:var(--text)}
+
+  @media(max-width:600px){.topic-grid{grid-template-columns:1fr}.hero h1{font-size:2rem}}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">✦ IB Science Hub</span>
+  <a href="#biology" class="bio">🧬 Bio</a>
+  <a href="#chemistry" class="chem">⚗️ Chem</a>
+  <a href="#physics" class="phys">⚡ Physics</a>
+  <a href="#cs" class="cs">💻 CS</a>
+  <a href="#sehs" class="sehs">🏃 SEHS</a>
+  <a href="#ess" class="ess">🌍 ESS</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Your IB Syllabus,<br><span>All in One Place</span></h1>
+  <p>Stop drowning in 100-page guides. Every syllabus point, every topic — organised, searchable, and colour-coded for you.</p>
+  <div class="search-bar">
+    <input type="text" id="globalSearch" placeholder="Search any syllabus point… e.g. 'meiosis', 'Newton', 'algorithm'" oninput="handleSearch(this.value)">
+    <button onclick="handleSearch(document.getElementById('globalSearch').value)">🔍</button>
+  </div>
+  <div style="height:1.5rem"></div>
+  <div class="subject-pills">
+    <a href="#biology" class="pill bio">🧬 Biology</a>
+    <a href="#chemistry" class="pill chem">⚗️ Chemistry</a>
+    <a href="#physics" class="pill phys">⚡ Physics</a>
+    <a href="#cs" class="pill cs">💻 Computer Science</a>
+    <a href="#sehs" class="pill sehs">🏃 Sport Science</a>
+    <a href="#ess" class="pill ess">🌍 Env. Systems</a>
+  </div>
+</section>
+
+<div id="search-results"></div>
+
+<!-- ═══════════════ BIOLOGY ═══════════════ -->
+<section id="biology" class="subject-section bio">
+  <div class="section-header">
+    <span class="section-icon">🧬</span>
+    <div>
+      <div class="section-title">Biology</div>
+      <span style="color:var(--muted);font-size:.85rem">IB DP Biology — First Assessment 2025</span>
+    </div>
+    <button class="expand-btn" onclick="toggleAll('biology')">Expand All</button>
+  </div>
+  <div class="topic-grid" id="biology-grid"></div>
+</section>
+
+<!-- ═══════════════ CHEMISTRY ═══════════════ -->
+<section id="chemistry" class="subject-section chem">
+  <div class="section-header">
+    <span class="section-icon">⚗️</span>
+    <div>
+      <div class="section-title">Chemistry</div>
+      <span style="color:var(--muted);font-size:.85rem">IB DP Chemistry — First Assessment 2025</span>
+    </div>
+    <button class="expand-btn" onclick="toggleAll('chemistry')">Expand All</button>
+  </div>
+  <div class="topic-grid" id="chemistry-grid"></div>
+</section>
+
+<!-- ═══════════════ PHYSICS ═══════════════ -->
+<section id="physics" class="subject-section phys">
+  <div class="section-header">
+    <span class="section-icon">⚡</span>
+    <div>
+      <div class="section-title">Physics</div>
+      <span style="color:var(--muted);font-size:.85rem">IB DP Physics — First Assessment 2025</span>
+    </div>
+    <button class="expand-btn" onclick="toggleAll('physics')">Expand All</button>
+  </div>
+  <div class="topic-grid" id="physics-grid"></div>
+</section>
+
+<!-- ═══════════════ COMPUTER SCIENCE ═══════════════ -->
+<section id="cs" class="subject-section cs">
+  <div class="section-header">
+    <span class="section-icon">💻</span>
+    <div>
+      <div class="section-title">Computer Science</div>
+      <span style="color:var(--muted);font-size:.85rem">IB DP Computer Science — First Assessment 2027</span>
+    </div>
+    <button class="expand-btn" onclick="toggleAll('cs')">Expand All</button>
+  </div>
+  <div class="topic-grid" id="cs-grid"></div>
+</section>
+
+<!-- ═══════════════ SEHS ═══════════════ -->
+<section id="sehs" class="subject-section sehs">
+  <div class="section-header">
+    <span class="section-icon">🏃</span>
+    <div>
+      <div class="section-title">Sports, Exercise &amp; Health Science</div>
+      <span style="color:var(--muted);font-size:.85rem">IB DP SEHS — First Assessment 2026</span>
+    </div>
+    <button class="expand-btn" onclick="toggleAll('sehs')">Expand All</button>
+  </div>
+  <div class="topic-grid" id="sehs-grid"></div>
+</section>
+
+<!-- ═══════════════ ESS ═══════════════ -->
+<section id="ess" class="subject-section ess">
+  <div class="section-header">
+    <span class="section-icon">🌍</span>
+    <div>
+      <div class="section-title">Environmental Systems &amp; Societies</div>
+      <span style="color:var(--muted);font-size:.85rem">IB DP ESS — First Assessment 2025</span>
+    </div>
+    <button class="expand-btn" onclick="toggleAll('ess')">Expand All</button>
+  </div>
+  <div class="topic-grid" id="ess-grid"></div>
+</section>
+
+<footer>
+  <p>Built for IB students · <strong>★ HL-only points are highlighted in gold</strong> · All content based on official IB syllabi</p>
+  <p style="margin-top:.5rem">Good luck — you've got this 💜</p>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+const SYLLABUS = {
+
+biology: [
+  { num:"A1", title:"Water & Inorganic Ions", points:[
+    "Hydrogen bonding gives water cohesion, adhesion, high specific heat capacity and latent heat of vaporisation",
+    "Water is a polar solvent — dissolves ionic and polar substances",
+    "Water as a metabolite: reactant in hydrolysis and condensation reactions",
+    "Thermal properties of water support aquatic life (buffer against temperature change)",
+    "Inorganic ions: Na⁺, K⁺, Ca²⁺, Mg²⁺, PO₄³⁻, NO₃⁻, Cl⁻, Fe²⁺/Fe³⁺ — roles in the body",
+    "Phosphate ions in ATP, DNA and phospholipids",
+    "Iron ions in haemoglobin (Fe²⁺ binds O₂)"
+  ]},
+  { num:"A2", title:"Nucleic Acids", points:[
+    "DNA double helix: antiparallel strands, base pairing (A-T, G-C), deoxyribose + phosphate backbone",
+    "RNA: single-stranded, ribose sugar, uracil instead of thymine",
+    "Semi-conservative replication: helicase, DNA polymerase, primase, ligase",
+    "mRNA, tRNA, rRNA — roles in transcription and translation",
+    "Codons (mRNA) and anticodons (tRNA) in translation",
+    "Transcription: RNA polymerase, promoter, template strand → pre-mRNA → splicing",
+    "Translation: ribosome, start codon AUG, stop codons, peptide bond formation",
+    {text:"Epigenetics: methylation and acetylation regulate gene expression",hl:true},
+    {text:"Nucleosome structure: DNA wound around histone octamers",hl:true}
+  ]},
+  { num:"A3", title:"Proteins", points:[
+    "Amino acid structure: amino group, carboxyl group, R-group (20 types)",
+    "Peptide bond formation by condensation; hydrolysis breaks peptide bonds",
+    "Primary (sequence), secondary (α-helix/β-sheet by H-bonds), tertiary (3D folding), quaternary structure",
+    "Globular vs fibrous proteins: enzymes vs structural roles",
+    "Active site, induced fit model, enzyme-substrate complex",
+    "Factors affecting enzyme activity: temperature, pH, substrate concentration, inhibitors",
+    "Competitive and non-competitive inhibition"
+  ]},
+  { num:"A4", title:"Carbohydrates & Lipids", points:[
+    "Monosaccharides (glucose, fructose, galactose) — α and β glucose",
+    "Disaccharides: maltose, sucrose, lactose — formed by condensation",
+    "Polysaccharides: starch (amylose/amylopectin), glycogen, cellulose",
+    "Triglyceride structure: glycerol + 3 fatty acids, ester bonds",
+    "Saturated vs unsaturated fatty acids; cis vs trans",
+    "Phospholipid bilayer structure: hydrophilic heads, hydrophobic tails",
+    "Cholesterol's role in membrane fluidity and stability"
+  ]},
+  { num:"B1", title:"Membranes & Transport", points:[
+    "Fluid mosaic model: phospholipid bilayer with embedded proteins",
+    "Passive transport: diffusion, osmosis, facilitated diffusion (no ATP)",
+    "Active transport: against concentration gradient, requires ATP and carrier proteins",
+    "Exocytosis and endocytosis (phagocytosis, pinocytosis)",
+    "Osmosis — water potential, hypotonic/isotonic/hypertonic solutions",
+    "Channel proteins and carrier proteins",
+    "Effect of temperature and cholesterol on membrane fluidity"
+  ]},
+  { num:"B2", title:"Cell & Nuclear Division", points:[
+    "Cell cycle: G1, S (DNA replication), G2, Mitosis, Cytokinesis",
+    "Mitosis stages: prophase, metaphase, anaphase, telophase",
+    "Meiosis I (homologous pairs separate) and Meiosis II (sister chromatids separate)",
+    "Crossing over during prophase I — increases genetic variation",
+    "Independent assortment of chromosomes during meiosis",
+    "Cancer: uncontrolled cell division due to mutations in proto-oncogenes/tumour suppressor genes",
+    "Stem cells: totipotent, pluripotent, multipotent"
+  ]},
+  { num:"B3", title:"Photosynthesis", points:[
+    "Light-dependent reactions in thylakoid membrane: water splitting, ATP + NADPH production, O₂ release",
+    "Photosystems I and II; electron transport chain",
+    "Calvin cycle (light-independent): CO₂ fixation by RuBisCO, G3P production, RuBP regeneration",
+    "ATP and NADPH from light reactions used in Calvin cycle",
+    "Limiting factors: light intensity, CO₂ concentration, temperature",
+    {text:"Photoinhibition and photorespiration at high light/temperature",hl:true},
+    {text:"C4 and CAM plants as adaptations to reduce photorespiration",hl:true}
+  ]},
+  { num:"B4", title:"Cellular Respiration", points:[
+    "Glycolysis (cytoplasm): glucose → 2 pyruvate, net 2 ATP, 2 NADH",
+    "Link reaction: pyruvate → acetyl CoA + CO₂ + NADH",
+    "Krebs cycle (matrix): acetyl CoA → CO₂, ATP, NADH, FADH₂",
+    "Electron transport chain (inner mitochondrial membrane): NADH/FADH₂ → ATP (oxidative phosphorylation)",
+    "Chemiosmosis: proton gradient drives ATP synthase",
+    "Anaerobic respiration: lactic acid fermentation (animals), alcoholic fermentation (yeast)",
+    "Respiratory substrates: carbohydrates > lipids > proteins"
+  ]},
+  { num:"C1", title:"Ecosystems", points:[
+    "Producers, consumers (primary/secondary/tertiary), decomposers",
+    "Food chains and food webs; trophic levels",
+    "Energy flow: ~10% efficiency between trophic levels",
+    "Carbon cycle: photosynthesis, respiration, decomposition, combustion",
+    "Nitrogen cycle: fixation, nitrification, denitrification, ammonification",
+    "Population ecology: biotic potential, carrying capacity, S-curve vs J-curve",
+    "Interspecific relationships: competition, predation, mutualism, commensalism, parasitism"
+  ]},
+  { num:"C2", title:"Inheritance", points:[
+    "Mendel's laws: segregation and independent assortment",
+    "Monohybrid and dihybrid crosses; Punnett squares",
+    "Dominant, recessive, codominant, incomplete dominance, multiple alleles",
+    "Sex-linked inheritance: X-linked recessive traits (colour-blindness, haemophilia)",
+    "ABO blood groups — multiple alleles and codominance",
+    "Chi-squared test for goodness of fit to expected ratios",
+    {text:"Polygenic inheritance and epistasis",hl:true},
+    {text:"Linked genes and recombination frequencies to calculate map distances",hl:true}
+  ]},
+  { num:"C3", title:"Classification & Biodiversity", points:[
+    "Binomial nomenclature; taxonomic hierarchy: Domain → Kingdom → Phylum → Class → Order → Family → Genus → Species",
+    "Three domains: Bacteria, Archaea, Eukarya",
+    "Phylogenetic trees — cladistics, shared derived characters",
+    "Species concept: biological, morphological, phylogenetic",
+    "Biodiversity: genetic, species, ecosystem diversity",
+    "IUCN Red List categories; threats to biodiversity",
+    {text:"Molecular phylogeny: sequence data to determine evolutionary relationships",hl:true}
+  ]},
+  { num:"D1", title:"Origin of Cells & Viruses", points:[
+    "Abiogenesis: Miller-Urey experiment, RNA world hypothesis",
+    "Prokaryotic cells: no nucleus, 70S ribosomes, circular DNA, plasmids",
+    "Eukaryotic cells: membrane-bound organelles, 80S ribosomes",
+    "Endosymbiotic theory: evidence from mitochondria and chloroplasts",
+    "Virus structure: capsid, nucleic acid (DNA or RNA), envelope (some)",
+    "Lytic and lysogenic cycles",
+    "SARS-CoV-2 as a case study: spike protein, ACE2 receptor"
+  ]},
+  { num:"D2", title:"Cell Specialisation", points:[
+    "Differentiation: how one genome produces many cell types",
+    "Totipotent stem cells (zygote), pluripotent (inner cell mass), multipotent (adult stem cells)",
+    "Red blood cells: no nucleus, biconcave disc, haemoglobin",
+    "Neurons: cell body, axon, dendrites, myelin sheath, Schwann cells",
+    "Muscle cells: myofibrils, sarcomere, actin and myosin",
+    "Staining and microscopy techniques; magnification and resolution calculations"
+  ]},
+  { num:"D3", title:"Homeostasis", points:[
+    "Negative feedback loops: maintain set points",
+    "Thermoregulation: vasodilation/vasoconstriction, sweating, shivering",
+    "Blood glucose regulation: insulin (lower) and glucagon (raise) from pancreas",
+    "Osmoregulation: kidney nephron, filtration, selective reabsorption, secretion",
+    "Type 1 vs Type 2 diabetes: causes and treatments",
+    {text:"Hormonal control of the menstrual cycle: FSH, LH, oestrogen, progesterone",hl:true},
+    {text:"Kidney regulation of water reabsorption: ADH and collecting duct permeability",hl:true}
+  ]}
+],
+
+chemistry: [
+  { num:"S1.1", title:"Particulate Nature of Matter", points:[
+    "Atoms, ions, molecules and formula units as building blocks",
+    "Kinetic molecular theory: particles in constant motion, no intermolecular forces in ideal gas",
+    "Changes of state: melting, boiling, sublimation — energy and temperature",
+    "Heating/cooling curves: plateaus indicate phase changes",
+    "Plasma as the fourth state of matter"
+  ]},
+  { num:"S1.2", title:"The Nuclear Atom", points:[
+    "Protons (positive), neutrons (neutral) in nucleus; electrons in shells",
+    "Atomic number (Z) = protons; mass number (A) = protons + neutrons",
+    "Isotopes: same Z, different A; relative atomic mass (Ar) uses weighted average",
+    "Electron configuration: shells, subshells (s, p, d, f), orbitals",
+    "Evidence for nuclear model: Geiger-Marsden gold foil experiment",
+    {text:"Quantised energy levels; emission spectra as evidence",hl:true}
+  ]},
+  { num:"S1.3", title:"Electron Configuration", points:[
+    "Aufbau principle, Hund's rule, Pauli exclusion principle",
+    "Electronic configuration notation: 1s² 2s² 2p⁶ etc.",
+    "Core and valence electrons",
+    "First ionisation energy trends across periods and down groups",
+    "Successive ionisation energies reveal group of element",
+    {text:"Orbital diagrams; anomalies at Cr and Cu",hl:true},
+    {text:"Photoelectron spectroscopy (PES) to determine electron configuration",hl:true}
+  ]},
+  { num:"S1.4", title:"Counting Particles — The Mole", points:[
+    "Avogadro's constant: 6.02 × 10²³ particles per mole",
+    "Molar mass (g mol⁻¹) numerically equals Ar or Mr",
+    "n = m/M; n = V/Vm (at STP: 22.7 dm³ mol⁻¹)",
+    "Empirical and molecular formula from combustion data or % composition",
+    "Percentage composition and % yield calculations",
+    "Limiting reagent: determine which runs out first"
+  ]},
+  { num:"S1.5", title:"Ideal Gases", points:[
+    "Ideal gas equation: pV = nRT",
+    "Standard conditions: STP (0 °C, 100 kPa); standard solution (298 K, 100 kPa)",
+    "Real vs ideal behaviour: deviations at high pressure/low temperature",
+    "Molar volume at STP = 22.7 dm³ mol⁻¹"
+  ]},
+  { num:"S2.1", title:"The Periodic Table", points:[
+    "Periodicity: trends in atomic radius, ionisation energy, electron affinity, electronegativity across periods",
+    "Group properties: alkali metals, halogens, noble gases, transition metals",
+    "Period 3 oxides and chlorides: nature (ionic/covalent) and acid-base behaviour",
+    "Metallic character decreases across a period, increases down a group",
+    {text:"First-row d-block transition metals: variable oxidation states, catalytic activity, complex ions, colour",hl:true}
+  ]},
+  { num:"S2.2", title:"Chemical Bonding", points:[
+    "Ionic bonds: electron transfer, lattice energy, properties (high mp, conducts when molten)",
+    "Covalent bonds: electron sharing, single/double/triple bonds, bond energy and length trends",
+    "Metallic bonding: sea of delocalised electrons",
+    "Lewis structures (dot-and-cross); formal charge",
+    "VSEPR theory: predict shape and bond angles",
+    "Shapes: linear, trigonal planar, tetrahedral, trigonal bipyramidal, octahedral + variants with lone pairs",
+    "Electronegativity → bond polarity → molecular polarity",
+    {text:"Hybridisation: sp, sp², sp³; σ and π bonds",hl:true},
+    {text:"Resonance structures; delocalisation in benzene",hl:true}
+  ]},
+  { num:"S2.3", title:"Intermolecular Forces", points:[
+    "London dispersion forces (all molecules) — temporary induced dipoles",
+    "Dipole-dipole forces in polar molecules",
+    "Hydrogen bonding: N-H, O-H, F-H with lone pairs",
+    "Relative strength: H-bond > dipole-dipole > LDF",
+    "Effect on boiling points, viscosity, surface tension",
+    "Anomalous properties of water explained by H-bonding"
+  ]},
+  { num:"R1.1", title:"Representing Reactions", points:[
+    "Balancing equations by inspection and using half-equations",
+    "State symbols: (s),(l),(g),(aq)",
+    "Ionic equations: remove spectator ions",
+    "Oxidation number rules and assigning ox. states",
+    "Oxidation and reduction in terms of electrons/oxidation number"
+  ]},
+  { num:"R2.1", title:"Energy Cycles & Thermodynamics", points:[
+    "Enthalpy change (ΔH): exothermic (−) vs endothermic (+)",
+    "Standard enthalpy of combustion, formation, neutralisation",
+    "Hess's law: ΔH is path-independent",
+    "Calorimetry: q = mcΔT; specific heat capacity of water = 4.18 J g⁻¹ K⁻¹",
+    "Born-Haber cycles for ionic compounds",
+    {text:"Entropy (S): disorder increases in dissolution, melting, gas-phase reactions",hl:true},
+    {text:"Gibbs free energy: ΔG = ΔH − TΔS; spontaneity when ΔG < 0",hl:true}
+  ]},
+  { num:"R2.2", title:"Rates of Reaction", points:[
+    "Rate = change in concentration / time; experimental measurement methods",
+    "Collision theory: activation energy (Ea), orientation, effective collisions",
+    "Factors: concentration, pressure (gas), temperature, surface area, catalyst",
+    "Maxwell-Boltzmann distribution; catalyst lowers Ea",
+    "Rate expression: rate = k[A]^m[B]^n — determined experimentally",
+    "Order of reaction (0, 1, 2) and half-life",
+    {text:"Arrhenius equation: k = Ae^(−Ea/RT); graphical determination of Ea",hl:true}
+  ]},
+  { num:"R2.3", title:"Equilibrium", points:[
+    "Dynamic equilibrium: forward rate = reverse rate",
+    "Equilibrium constant Kc (and Kp for gases)",
+    "Le Chatelier's principle: response to changes in concentration, pressure, temperature",
+    "Effect of catalyst: does not change K, increases rate of both reactions",
+    "Reaction quotient Q: predict direction of reaction",
+    {text:"Kp expressions and interconversion with Kc",hl:true}
+  ]},
+  { num:"R3.1", title:"Organic Chemistry", points:[
+    "Homologous series: alkanes, alkenes, alkynes, alcohols, aldehydes, ketones, carboxylic acids, esters, amines, amides",
+    "IUPAC nomenclature and structural/displayed formulae",
+    "Isomerism: structural (chain, positional, functional group) and stereoisomerism (geometric E/Z, optical)",
+    "Reaction types: substitution, addition, elimination, condensation, hydrolysis, redox",
+    "Mechanisms: free radical substitution, electrophilic addition, nucleophilic substitution (SN1/SN2)",
+    {text:"Electrophilic aromatic substitution (benzene) — mechanisms",hl:true},
+    {text:"Reaction pathways and multi-step synthesis",hl:true}
+  ]},
+  { num:"R3.2", title:"Acids & Bases", points:[
+    "Brønsted-Lowry: proton donor/acceptor; conjugate acid-base pairs",
+    "Lewis acid-base definition",
+    "Strong vs weak acids/bases; degree of dissociation",
+    "pH = −log[H⁺]; Ka and pKa",
+    "pH calculations for strong/weak acids and bases",
+    "Buffer solutions: composition, mechanism, Henderson-Hasselbalch equation",
+    "Titration curves: equivalence point, choice of indicator",
+    {text:"Salt hydrolysis; amphiprotic species",hl:true}
+  ]},
+  { num:"R3.3", title:"Redox & Electrochemistry", points:[
+    "Half-equations for oxidation and reduction",
+    "Standard electrode potential (E°) and cell voltage: E°cell = E°cathode − E°anode",
+    "Electrochemical cells: anode (oxidation), cathode (reduction), salt bridge",
+    "Electrolysis: electrolyte, inert electrodes, products predicted by electrode potential",
+    "Faraday's laws: Q = It; mass deposited calculations",
+    {text:"Fuel cells: H₂/O₂ cell; advantages over conventional cells",hl:true},
+    {text:"Corrosion as an electrochemical process; protection methods",hl:true}
+  ]}
+],
+
+physics: [
+  { num:"A.1", title:"Kinematics", points:[
+    "Displacement, velocity, acceleration — vector vs scalar",
+    "Equations of uniform acceleration (SUVAT)",
+    "Graphs: displacement-time (gradient = velocity), velocity-time (gradient = acceleration, area = displacement)",
+    "Projectile motion: horizontal (constant v) and vertical (constant a = g) components",
+    "Air resistance and terminal velocity"
+  ]},
+  { num:"A.2", title:"Forces & Momentum", points:[
+    "Newton's three laws of motion",
+    "Free body diagrams; net force and acceleration",
+    "Friction: static and kinetic; coefficient of friction",
+    "Linear momentum: p = mv; impulse = FΔt = Δp",
+    "Conservation of momentum in collisions (closed system)",
+    "Elastic vs inelastic collisions; kinetic energy conservation",
+    {text:"Angular momentum and its conservation",hl:true}
+  ]},
+  { num:"A.3", title:"Work, Energy & Power", points:[
+    "Work = Fd cosθ; energy transfer",
+    "Kinetic energy: Ek = ½mv²; gravitational PE: Ep = mgh",
+    "Conservation of energy; energy dissipation",
+    "Power: P = W/t = Fv",
+    "Efficiency: useful output / total input × 100%",
+    "Elastic potential energy: Ep = ½kx²"
+  ]},
+  { num:"A.4", title:"Rigid Body Mechanics", points:[
+    {text:"Torque: τ = Fr sinθ; conditions for rotational equilibrium",hl:true},
+    {text:"Moment of inertia (I) for common shapes",hl:true},
+    {text:"Angular kinematics: ω, α, θ analogues of v, a, s",hl:true},
+    {text:"Rotational KE = ½Iω²; angular momentum L = Iω",hl:true},
+    {text:"Rolling without slipping: v = rω",hl:true}
+  ]},
+  { num:"B.1", title:"Thermal Physics", points:[
+    "Temperature, thermal energy, internal energy distinction",
+    "Specific heat capacity: Q = mcΔT",
+    "Specific latent heat: Q = mL (fusion and vaporisation)",
+    "Ideal gas assumptions and kinetic theory",
+    "Ideal gas law: pV = nRT; Boyle's, Charles's, Gay-Lussac's laws",
+    "Absolute zero; Kelvin scale"
+  ]},
+  { num:"B.2", title:"Thermodynamics", points:[
+    "First law: ΔU = Q − W (heat added to system minus work done by system)",
+    "Isothermal, adiabatic, isochoric, isobaric processes",
+    "Second law: entropy increases in irreversible processes",
+    "Heat engines: efficiency ≤ 1 − Tc/Th (Carnot)",
+    "p-V diagrams: work done = area under curve",
+    {text:"Entropy change calculations: ΔS = Q/T",hl:true},
+    {text:"Carnot cycle — four stages and maximum efficiency",hl:true}
+  ]},
+  { num:"C.1", title:"Simple Harmonic Motion", points:[
+    "SHM definition: acceleration ∝ −displacement; a = −ω²x",
+    "x = A cos(ωt); v = −Aω sin(ωt); v_max = Aω",
+    "Period of simple pendulum: T = 2π√(l/g)",
+    "Period of mass-spring: T = 2π√(m/k)",
+    "Energy in SHM: KE and PE interchange; total E = ½kA²",
+    "Damping: light, heavy, critical; resonance"
+  ]},
+  { num:"C.2", title:"Wave Phenomena", points:[
+    "Transverse vs longitudinal waves; speed = fλ",
+    "Superposition principle; constructive and destructive interference",
+    "Standing waves: nodes and antinodes; harmonics",
+    "Diffraction: single slit, double slit (Young's), diffraction grating: nλ = d sinθ",
+    "Doppler effect: moving source/observer; fd = fs(v ± vo)/(v ∓ vs)",
+    {text:"Polarisation of transverse waves; Malus's Law: I = I₀cos²θ",hl:true},
+    {text:"Thin film interference; path difference and phase change",hl:true}
+  ]},
+  { num:"C.3", title:"Electricity & Magnetism", points:[
+    "Electric field: E = F/q; E = V/d (uniform field)",
+    "Coulomb's law: F = kq₁q₂/r²",
+    "Electric potential energy and potential: V = kq/r",
+    "Current, potential difference, resistance: V = IR (Ohm's law)",
+    "Resistivity: R = ρL/A",
+    "Kirchhoff's laws: current (junction) and voltage (loop)",
+    "Series and parallel circuits; internal resistance",
+    "Magnetic force: F = qvB sinθ; F = BIL sinθ",
+    "Faraday's law of induction: ε = −ΔΦ/Δt",
+    {text:"Capacitors: Q = CV; energy stored = ½CV²; charging/discharging",hl:true},
+    {text:"AC circuits: rms values, phase relationships, impedance",hl:true}
+  ]},
+  { num:"D.1", title:"Gravitational Fields", points:[
+    "Newton's law of gravitation: F = Gm₁m₂/r²",
+    "Gravitational field strength: g = GM/r²",
+    "Gravitational potential: Vg = −GM/r",
+    "Orbital mechanics: v² = GM/r; T² ∝ r³ (Kepler's third law)",
+    "Escape velocity: v = √(2GM/r)",
+    {text:"Gravitational potential energy: Ep = −GMm/r; energy of orbits",hl:true}
+  ]},
+  { num:"E.1", title:"Nuclear & Particle Physics", points:[
+    "Nuclear notation: ᴬ_Z X; isotopes",
+    "Binding energy and mass defect: E = mc²",
+    "Nuclear stability and the N-Z curve",
+    "Radioactive decay: α, β⁻, β⁺, γ — properties and penetration",
+    "Half-life: N = N₀(½)^(t/t½); activity A = λN",
+    "Fission and fusion reactions; energy released",
+    "Standard model: quarks (u, d, s, c, b, t), leptons, gauge bosons",
+    {text:"Quark content of protons and neutrons; hadrons vs mesons",hl:true},
+    {text:"Particle-antiparticle annihilation and pair production",hl:true}
+  ]},
+  { num:"E.2", title:"Quantum & Astrophysics", points:[
+    "Photoelectric effect: E = hf; work function φ; threshold frequency",
+    "de Broglie wavelength: λ = h/p",
+    "Atomic emission and absorption spectra",
+    "Wien's law: λ_max T = 2.90 × 10⁻³ m K",
+    "Stefan-Boltzmann law: L = 4πr²σT⁴",
+    "Hubble's law: v = H₀d; evidence for expansion",
+    "H-R diagram: main sequence, giants, white dwarfs",
+    {text:"Stellar evolution: life cycles from main sequence to end states",hl:true},
+    {text:"Cosmic microwave background as evidence for Big Bang",hl:true}
+  ]}
+],
+
+cs: [
+  { num:"1.1", title:"Abstraction & Decomposition", points:[
+    "Abstraction: removing unnecessary detail to focus on essential features",
+    "Decomposition: breaking complex problems into manageable sub-problems",
+    "Computational thinking: pattern recognition, generalisation, algorithm design",
+    "Modelling: representing real-world systems computationally",
+    "Trade-offs in abstraction: accuracy vs simplicity"
+  ]},
+  { num:"1.2", title:"Thinking Procedurally", points:[
+    "Algorithms: finite, unambiguous sequence of steps",
+    "Pseudocode and flowcharts for representing algorithms",
+    "Sequencing, selection (if/else), iteration (for/while)",
+    "Structured programming principles",
+    "Testing: black-box, white-box, dry running trace tables"
+  ]},
+  { num:"1.3", title:"Thinking Logically", points:[
+    "Boolean logic: AND, OR, NOT, XOR, NAND, NOR",
+    "Truth tables for compound expressions",
+    "Logic gates and circuit diagrams",
+    "Simplifying Boolean expressions using De Morgan's laws",
+    "Conditions and pre/post conditions in algorithms"
+  ]},
+  { num:"1.4", title:"Thinking Ahead", points:[
+    "Pre-conditions and post-conditions for subroutines",
+    "Inputs, outputs and side effects",
+    "Caching and pre-fetching",
+    "Reusable components and libraries",
+    "Concurrency and parallel processing concepts"
+  ]},
+  { num:"2.1", title:"Binary & Data Representation", points:[
+    "Binary (base 2), denary (base 10), hexadecimal (base 16) conversion",
+    "Binary addition, subtraction; two's complement for negative numbers",
+    "Integer overflow; fixed and floating point representation",
+    "ASCII and Unicode for character representation",
+    "Image representation: pixels, bit depth, resolution, file size calculations",
+    "Sound: sampling rate, bit depth, Nyquist theorem",
+    "Compression: lossless (RLE, Huffman) vs lossy (JPEG, MP3)"
+  ]},
+  { num:"2.2", title:"Data Structures", points:[
+    "Arrays (1D and 2D): declaration, access, traversal",
+    "Records/structs: grouping related data",
+    "Stacks: LIFO — push, pop, peek; applications (recursion, undo)",
+    "Queues: FIFO — enqueue, dequeue; circular queue",
+    "Linked lists: nodes, pointers, insertion and deletion",
+    "Trees: root, leaf, parent, child; binary trees",
+    "Hash tables: hash function, collision resolution (chaining, open addressing)",
+    {text:"Graphs: directed/undirected, weighted; adjacency matrix vs list",hl:true}
+  ]},
+  { num:"2.3", title:"Algorithms", points:[
+    "Searching: linear search O(n), binary search O(log n) — requires sorted data",
+    "Sorting: bubble O(n²), insertion O(n²), merge O(n log n), quick O(n log n) average",
+    "Big-O notation for time and space complexity",
+    "Recursion: base case, recursive case; call stack",
+    "Pathfinding: Dijkstra's algorithm for shortest path",
+    {text:"Dynamic programming: memoisation; knapsack problem example",hl:true},
+    {text:"Heuristic approaches when optimal solution is computationally infeasible",hl:true}
+  ]},
+  { num:"3.1", title:"Computer Architecture", points:[
+    "Von Neumann architecture: CPU, memory, I/O",
+    "CPU components: ALU, CU, registers (PC, MAR, MDR, ACC, IR)",
+    "Fetch-decode-execute cycle",
+    "Clock speed, cores, cache — factors affecting CPU performance",
+    "Primary storage: RAM (volatile), ROM; secondary storage: HDD, SSD",
+    "Memory hierarchy: registers → cache → RAM → secondary"
+  ]},
+  { num:"3.2", title:"Operating Systems & Networks", points:[
+    "OS functions: process management, memory management, file system, I/O control",
+    "Scheduling algorithms: FCFS, round-robin, priority",
+    "Network topologies: bus, star, ring, mesh",
+    "OSI model: 7 layers and their roles",
+    "TCP/IP stack: application, transport, internet, network access",
+    "IP addressing: IPv4, IPv6, subnetting",
+    "DNS, HTTP/HTTPS, FTP, SMTP protocols",
+    "Network security: firewall, encryption, authentication"
+  ]},
+  { num:"4.1", title:"Programming Paradigms", points:[
+    "Procedural/imperative programming: sequence of commands",
+    "Object-oriented programming: classes, objects, encapsulation, inheritance, polymorphism",
+    "Functional programming: pure functions, higher-order functions, immutability",
+    "Event-driven programming: event loops and handlers",
+    "Choosing appropriate paradigm for a given problem"
+  ]},
+  { num:"4.2", title:"OOP Concepts", points:[
+    "Class definition: attributes and methods",
+    "Instantiation: creating objects from a class",
+    "Encapsulation: private/public access modifiers; getters and setters",
+    "Inheritance: superclass and subclass; method overriding",
+    "Polymorphism: same interface, different implementations",
+    "Abstract classes and interfaces",
+    {text:"Design patterns: singleton, factory, observer",hl:true}
+  ]},
+  { num:"5.1", title:"Databases", points:[
+    "Relational databases: tables, fields, records, primary keys, foreign keys",
+    "Entity-relationship (ER) diagrams",
+    "SQL: SELECT, FROM, WHERE, JOIN, GROUP BY, ORDER BY, INSERT, UPDATE, DELETE",
+    "Normalisation: 1NF, 2NF, 3NF — removing redundancy",
+    "ACID properties of transactions: Atomicity, Consistency, Isolation, Durability",
+    {text:"NoSQL databases: document, key-value, graph — use cases vs relational",hl:true}
+  ]},
+  { num:"5.2", title:"Web & AI Concepts", points:[
+    "HTML structure, CSS styling, JavaScript interactivity basics",
+    "Client-server architecture; HTTP request-response cycle",
+    "APIs: REST, JSON data exchange",
+    "Machine learning types: supervised, unsupervised, reinforcement",
+    "Neural networks: input, hidden, output layers; training, overfitting",
+    "Ethical issues in AI: bias, privacy, transparency, accountability",
+    {text:"Natural language processing; computer vision applications",hl:true}
+  ]}
+],
+
+sehs: [
+  { num:"1", title:"Anatomy for Movement", points:[
+    "Skeletal system: axial and appendicular skeleton; bone types and functions",
+    "Joints: fibrous, cartilaginous, synovial — structure and movement types",
+    "Synovial joint components: capsule, synovial fluid, cartilage, ligaments",
+    "Types of movement: flexion/extension, abduction/adduction, rotation, circumduction",
+    "Major muscles: biceps, triceps, quadriceps, hamstrings, gastrocnemius, deltoid",
+    "Muscle attachment: origin (fixed), insertion (mobile), tendons",
+    "Antagonistic muscle pairs; agonist and antagonist roles"
+  ]},
+  { num:"2", title:"Exercise Physiology", points:[
+    "Muscle fibre types: Type I (slow oxidative), Type IIa (fast oxidative-glycolytic), Type IIx (fast glycolytic)",
+    "Motor units: recruitment and the size principle",
+    "Energy systems: ATP-PCr (0–10 s), anaerobic glycolysis (10–120 s), aerobic oxidation (>2 min)",
+    "Oxygen consumption: VO₂, VO₂ max, oxygen deficit, EPOC",
+    "Lactate threshold and its relevance to endurance performance",
+    "Cardiovascular response to exercise: heart rate, stroke volume, cardiac output (Q = SV × HR)",
+    "Fick principle: VO₂ = Q × (a-v O₂ difference)"
+  ]},
+  { num:"3", title:"Sports Nutrition", points:[
+    "Macronutrients: carbohydrates (4 kcal/g), fats (9 kcal/g), proteins (4 kcal/g)",
+    "Glycaemic index and glycaemic load; pre/during/post exercise nutrition",
+    "Carbohydrate loading for endurance sports",
+    "Protein requirements for athletes: synthesis and repair; timing",
+    "Hydration: sweat rate, hyponatraemia, rehydration strategies",
+    "Vitamins and minerals: iron (O₂ transport), calcium (bone/muscle), vitamin D",
+    {text:"Ergogenic aids: creatine, caffeine, sodium bicarbonate — mechanisms and evidence",hl:true}
+  ]},
+  { num:"4", title:"Movement Analysis", points:[
+    "Newton's three laws applied to sport",
+    "Levers in the body: first, second, third class; mechanical advantage",
+    "Linear kinematics: speed, velocity, acceleration in sporting contexts",
+    "Projectile motion in sport: angle of release, height, velocity",
+    "Force: ground reaction force, friction, drag",
+    "Vectors: resultant force and equilibrium",
+    {text:"Angular motion: torque, moment of inertia, angular momentum conservation",hl:true}
+  ]},
+  { num:"5", title:"Skill Acquisition", points:[
+    "Classification of skills: open/closed, gross/fine, discrete/serial/continuous",
+    "Stages of learning: cognitive, associative, autonomous (Fitts & Posner)",
+    "Transfer of learning: positive, negative, bilateral",
+    "Types of practice: massed, distributed, whole, part",
+    "Types of feedback: intrinsic/extrinsic; knowledge of results/performance; immediate/delayed",
+    "Information processing model: input → perception → decision → output → feedback",
+    {text:"Memory models: short-term sensory store, working memory, long-term memory",hl:true}
+  ]},
+  { num:"6", title:"Measurement & Evaluation", points:[
+    "Health-related fitness components: cardiovascular endurance, muscular strength, muscular endurance, flexibility, body composition",
+    "Skill-related fitness: speed, power, agility, balance, coordination, reaction time",
+    "Fitness tests: VO₂ max (multistage fitness test), 1RM, sit-and-reach, body fat (skinfold, BMI)",
+    "Validity, reliability and objectivity of tests",
+    "Principles of training: FITT (frequency, intensity, time, type), overload, progression, specificity, reversibility",
+    "Periodisation: macrocycle, mesocycle, microcycle; tapering"
+  ]},
+  { num:"7", title:"Physiology of Training", points:[
+    "Aerobic training adaptations: increased VO₂ max, cardiac hypertrophy, increased mitochondrial density",
+    "Anaerobic training adaptations: increased PCr stores, buffering capacity, muscle hypertrophy",
+    "Resistance training: hypertrophy, neural adaptations, DOMS",
+    "Flexibility training: static, dynamic, PNF stretching; role of proprioceptors",
+    "Altitude training: increased EPO, red blood cell production",
+    {text:"Overtraining syndrome: symptoms, causes, prevention",hl:true},
+    {text:"Detraining: reversibility timeline for different adaptations",hl:true}
+  ]},
+  { num:"8", title:"Injury Prevention & Rehabilitation", points:[
+    "Common sports injuries: sprains, strains, fractures, dislocations, tendinopathy",
+    "PRICE protocol: Protection, Rest, Ice, Compression, Elevation",
+    "Acute vs chronic injuries; intrinsic and extrinsic risk factors",
+    "Warm-up and cool-down: physiological rationale",
+    "Proprioception and balance training in rehabilitation",
+    {text:"Stages of tissue healing: inflammatory, proliferative, remodelling phases",hl:true}
+  ]},
+  { num:"9", title:"Psychology of Sport", points:[
+    "Motivation: intrinsic vs extrinsic; self-determination theory",
+    "Arousal and performance: inverted-U hypothesis, catastrophe theory, zones of optimal functioning",
+    "Anxiety: trait vs state anxiety; cognitive and somatic anxiety",
+    "Attention: attentional focus (Nideffer); associative vs dissociative strategies",
+    "Mental imagery: types (internal/external); PETTLEP model",
+    "Goal setting: SMART goals; process, performance and outcome goals",
+    {text:"Self-efficacy (Bandura): sources and its effect on performance",hl:true}
+  ]}
+],
+
+ess: [
+  { num:"1.1", title:"Systems & Models", points:[
+    "Systems: open vs closed; inputs, outputs, storages, flows, processes",
+    "Positive feedback amplifies change; negative feedback dampens change",
+    "Models as simplifications — advantages and limitations",
+    "Emergent properties: whole is greater than sum of parts",
+    "Resilience, stability and tipping points"
+  ]},
+  { num:"1.2", title:"Sustainability & EVSs", points:[
+    "Environmental value systems (EVS): ecocentric, technocentric, anthropocentric",
+    "Sustainability: meeting present needs without compromising future generations",
+    "Ecological footprint: measure of resource demand",
+    "Natural capital and ecosystem services",
+    "Tragedy of the commons (Hardin); solutions: privatisation, regulation, community management"
+  ]},
+  { num:"2.1", title:"Ecosystems & Ecology", points:[
+    "Biotic and abiotic components of ecosystems",
+    "Trophic levels: producers, primary/secondary/tertiary consumers, decomposers",
+    "Energy flow: gross primary productivity (GPP), net primary productivity (NPP)",
+    "Food webs and trophic cascades",
+    "Ecological pyramids: energy, biomass, numbers",
+    "Nutrient cycling: carbon, nitrogen, phosphorus",
+    "Succession: primary and secondary; climax communities"
+  ]},
+  { num:"2.2", title:"Populations & Carrying Capacity", points:[
+    "Population growth: biotic potential, environmental resistance, carrying capacity (K)",
+    "Natality, mortality, immigration, emigration",
+    "r-selected vs K-selected species",
+    "Population sampling: quadrats, mark-recapture, transects",
+    "Species interactions: competition, predation, parasitism, mutualism, commensalism"
+  ]},
+  { num:"3.1", title:"Biodiversity", points:[
+    "Species richness, evenness, diversity indices (Simpson's D)",
+    "Hotspots of biodiversity: causes and conservation importance",
+    "Threats: habitat loss, overexploitation, invasive species, pollution, climate change",
+    "Conservation strategies: in-situ (national parks, reserves) vs ex-situ (zoos, seed banks)",
+    "IUCN Red List categories",
+    "Ecosystem services: provisioning, regulating, cultural, supporting"
+  ]},
+  { num:"4.1", title:"Water & Aquatic Systems", points:[
+    "Hydrological cycle: evaporation, condensation, precipitation, runoff, infiltration",
+    "Freshwater availability and distribution; global water stress",
+    "Water pollution: point source vs non-point source; eutrophication",
+    "Biological oxygen demand (BOD) as indicator of water quality",
+    "Water treatment: sedimentation, filtration, chlorination",
+    "Ocean acidification: CO₂ → carbonic acid; impact on marine organisms"
+  ]},
+  { num:"5.1", title:"Soil & Food Production", points:[
+    "Soil composition: mineral particles, organic matter, water, air, biota",
+    "Soil horizons: O, A, B, C layers",
+    "Soil degradation: erosion, salinisation, desertification, compaction",
+    "Agricultural systems: subsistence vs commercial; monoculture vs polyculture",
+    "Green Revolution: benefits (yield) and drawbacks (pesticides, soil degradation)",
+    "Organic farming, permaculture, agroforestry as alternatives",
+    "Food security: availability, access, utilisation, stability"
+  ]},
+  { num:"6.1", title:"Atmosphere & Climate Change", points:[
+    "Composition of atmosphere; greenhouse gases (CO₂, CH₄, N₂O, H₂O, O₃)",
+    "Enhanced greenhouse effect: sources of anthropogenic emissions",
+    "Evidence for climate change: temperature records, ice cores, sea level rise",
+    "Feedback mechanisms: ice-albedo, permafrost methane, water vapour",
+    "Ozone layer depletion: CFCs, UV radiation, Montreal Protocol",
+    "Climate change impacts: extreme weather, sea level rise, ecosystem shifts",
+    "Mitigation: renewable energy, carbon capture; adaptation strategies"
+  ]},
+  { num:"7.1", title:"Human Systems & Resource Use", points:[
+    "Fossil fuels: formation, reserves, EROI (energy return on investment)",
+    "Renewable energy: solar, wind, hydro, geothermal, biomass — advantages and limitations",
+    "Energy security and geopolitics",
+    "Solid domestic waste: composition, management hierarchy (reduce, reuse, recycle)",
+    "Pollution management: legislative, social, technological approaches",
+    "Urbanisation: impacts on biodiversity, heat islands, water runoff"
+  ]},
+  { num:"8.1", title:"Climate Action & Global Agreements", points:[
+    "IPCC: role, reports, RCP scenarios",
+    "Paris Agreement: 1.5°C and 2°C targets; nationally determined contributions",
+    "Carbon trading: cap-and-trade systems; carbon taxes",
+    "Environmental impact assessment (EIA): process and limitations",
+    "Sustainable Development Goals (SDGs) relevant to environment",
+    "Role of NGOs, governments, international bodies in environmental governance"
+  ]}
+]
+
+}; // end SYLLABUS
+
+// ═══════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════
+function renderGrid(subject, color) {
+  const grid = document.getElementById(subject + '-grid');
+  const topics = SYLLABUS[subject];
+  topics.forEach((topic, idx) => {
+    const card = document.createElement('div');
+    card.className = `topic-card ${color}`;
+    card.dataset.subject = subject;
+    card.dataset.idx = idx;
+
+    const pts = topic.points.map(p => {
+      const isHL = typeof p === 'object' && p.hl;
+      const text = isHL ? p.text : p;
+      return `<li class="${isHL ? 'hl' : ''}">${text}${isHL ? '<span class="hl-note">HL</span>' : ''}</li>`;
+    }).join('');
+
+    card.innerHTML = `
+      <div class="topic-header" onclick="toggleCard(this)">
+        <span class="num">${topic.num}</span>
+        <span>${topic.title}</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="topic-body">
+        <ul>${pts}</ul>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+renderGrid('biology','bio');
+renderGrid('chemistry','chem');
+renderGrid('physics','phys');
+renderGrid('cs','cs');
+renderGrid('sehs','sehs');
+renderGrid('ess','ess');
+
+function toggleCard(header) {
+  const card = header.parentElement;
+  const body = card.querySelector('.topic-body');
+  const open = body.classList.toggle('open');
+  card.classList.toggle('open', open);
+}
+
+function toggleAll(subject) {
+  const grid = document.getElementById(subject + '-grid');
+  const cards = grid.querySelectorAll('.topic-card');
+  const anyOpen = [...cards].some(c => c.classList.contains('open'));
+  cards.forEach(card => {
+    card.classList.toggle('open', !anyOpen);
+    card.querySelector('.topic-body').classList.toggle('open', !anyOpen);
+  });
+  grid.closest('.subject-section').querySelector('.expand-btn').textContent =
+    anyOpen ? 'Expand All' : 'Collapse All';
+}
+
+// ═══════════════════════════════════════════════
+// SEARCH
+// ═══════════════════════════════════════════════
+const SUBJECT_META = {
+  biology:   { label:'Biology',    color:'bio',  emoji:'🧬' },
+  chemistry: { label:'Chemistry',  color:'chem', emoji:'⚗️' },
+  physics:   { label:'Physics',    color:'phys', emoji:'⚡' },
+  cs:        { label:'CS',         color:'cs',   emoji:'💻' },
+  sehs:      { label:'SEHS',       color:'sehs', emoji:'🏃' },
+  ess:       { label:'ESS',        color:'ess',  emoji:'🌍' }
+};
+
+function handleSearch(val) {
+  const q = val.trim().toLowerCase();
+  const resultsDiv = document.getElementById('search-results');
+  if (!q) { resultsDiv.style.display = 'none'; return; }
+
+  const hits = [];
+  Object.keys(SYLLABUS).forEach(subj => {
+    SYLLABUS[subj].forEach(topic => {
+      topic.points.forEach(p => {
+        const text = typeof p === 'object' ? p.text : p;
+        if (text.toLowerCase().includes(q)) {
+          hits.push({ subj, topic: topic.num + ' ' + topic.title, text });
+        }
+      });
+    });
+  });
+
+  resultsDiv.style.display = 'block';
+  if (!hits.length) {
+    resultsDiv.innerHTML = `<h2>No results for "<em>${val}</em>"</h2>`;
+    return;
+  }
+  const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  resultsDiv.innerHTML = `<h2>${hits.length} result${hits.length>1?'s':''} for "<em>${val}</em>"</h2>` +
+    hits.map(h => {
+      const m = SUBJECT_META[h.subj];
+      return `<div class="result-item">
+        <span class="result-tag ${m.color}" style="background:rgba(var(--_c),.15)">${m.emoji} ${m.label}</span>
+        ${h.text.replace(re,'<mark>$1</mark>')}
+        <div class="result-topic">${h.topic}</div>
+      </div>`;
+    }).join('');
+}
+
+// nav highlight on scroll
+const sections = document.querySelectorAll('.subject-section');
+const navLinks = document.querySelectorAll('nav a[href^="#"]');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
+  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#'+cur));
+}, { passive: true });
+</script>
+</body>
+</html>
